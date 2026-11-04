@@ -418,10 +418,9 @@ html[dir="rtl"] #railNext { --dir: -1; } html[dir="rtl"] #railPrev { --dir: 1; }
 .person { overflow: hidden; isolation: isolate; border-radius: 22px; background: var(--surface); border: 1px solid var(--line); transition: transform .5s var(--ease), border-color .4s; }
 .person:hover { transform: translateY(-6px); border-color: var(--orange); }
 .person__photo { position: relative; aspect-ratio: 1 / 1.02; overflow: hidden; background: radial-gradient(62% 52% at 50% 36%, rgba(244,122,32,.42), transparent 72%), linear-gradient(165deg, #2B1613, #0F0E10 75%); }
-.person__photo img { display: block; width: 100%; height: auto; transition: transform .8s var(--ease); transform-origin: 50% 35%; }
+.person__photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; transition: transform .8s var(--ease); transform-origin: 50% 35%; }
 .person:hover .person__photo img { transform: scale(1.04); }
-.person__photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 58%, var(--surface) 92%); }
-.person__photo--full::after { background: linear-gradient(180deg, transparent 72%, var(--surface) 95%); }
+.person__photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 76%, var(--surface) 96%); }
 /* Overlaps the photo's bottom edge with solid colour so no seam can show while the card animates */
 .person__info { position: relative; z-index: 1; padding: 6px 24px 26px; margin-top: -12px; background: var(--surface); }
 .person h3 { font-size: clamp(22px, 1.9vw, 26px); }
