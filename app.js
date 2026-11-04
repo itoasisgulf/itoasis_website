@@ -309,9 +309,59 @@
   /* ---------- case rail ---------- */
   const rail = $('#rail');
   if (rail) {
-    const step = () => ($('.case', rail).offsetWidth + 22) * (root.dir === 'rtl' ? -1 : 1);
-    $('#railNext').addEventListener('click', () => rail.scrollBy({ left: step(), behavior: 'smooth' }));
-    $('#railPrev').addEventListener('click', () => rail.scrollBy({ left: -step(), behavior: 'smooth' }));
+    const cards = $$('.case', rail);
+    const btnNext = $('#railNext'), btnPrev = $('#railPrev'), now = $('#railNow'), railBar = $('#railBar');
+    const targetOf = i => cards[i].offsetLeft - cards[0].offsetLeft;
+    const maxScroll = () => rail.scrollWidth - rail.clientWidth;
+    let current = 0, moving = false, lockUntil = 0;
+    function paintRail() {
+      cards.forEach((c, i) => c.classList.toggle('is-current', i === current));
+      if (now) now.textContent = String(current + 1).padStart(2, '0');
+      if (railBar) railBar.style.width = ((current + 1) / cards.length * 100) + '%';
+      btnPrev.classList.toggle('is-off', current === 0);
+      btnNext.classList.toggle('is-off', current === cards.length - 1);
+    }
+    // Follows manual dragging and swiping. Arrow clicks set `current` directly, because on
+    // wide screens the last cards share one scroll position and can't be told apart by it.
+    function syncRail() {
+      if (moving || Date.now() < lockUntil) return;
+      const x = rail.scrollLeft;
+      const atEnd = Math.abs(x) >= maxScroll() - 2;
+      current = atEnd ? cards.length - 1 : cards.reduce((best, _, i) => (Math.abs(targetOf(i) - x) < Math.abs(targetOf(best) - x) ? i : best), 0);
+      paintRail();
+    }
+    function glideTo(i) {
+      current = i;
+      paintRail();
+      const from = rail.scrollLeft, limit = maxScroll();
+      const to = Math.sign(targetOf(i) || 1) * Math.min(Math.abs(targetOf(i)), limit);
+      lockUntil = Date.now() + 900;
+      if (Math.abs(to - from) < 1) return;
+      const t0 = performance.now(), dur = 700;
+      moving = true;
+      rail.classList.add('is-moving');
+      const frame = t => {
+        const p = Math.min((t - t0) / dur, 1);
+        const e = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        rail.scrollLeft = from + (to - from) * e;
+        if (p < 1) return requestAnimationFrame(frame);
+        moving = false;
+        rail.classList.remove('is-moving');
+        lockUntil = Date.now() + 250;
+      };
+      requestAnimationFrame(frame);
+    }
+    const press = (btn, delta) => btn.addEventListener('click', () => {
+      if (moving || btn.classList.contains('is-off')) return;
+      btn.classList.remove('is-press'); void btn.offsetWidth; btn.classList.add('is-press');
+      setTimeout(() => btn.classList.remove('is-press'), 560);
+      glideTo(Math.max(0, Math.min(cards.length - 1, current + delta)));
+    });
+    press(btnNext, 1);
+    press(btnPrev, -1);
+    rail.addEventListener('scroll', syncRail, { passive: true });
+    addEventListener('resize', syncRail);
+    syncRail();
     let dx0 = null, s0 = 0;
     rail.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; dx0 = e.clientX; s0 = rail.scrollLeft; rail.classList.add('is-drag'); rail.setPointerCapture(e.pointerId); });
     rail.addEventListener('pointermove', e => { if (dx0 !== null) rail.scrollLeft = s0 - (e.clientX - dx0); });
