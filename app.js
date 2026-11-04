@@ -361,7 +361,7 @@
       if (!d.name || !okEmail) { note.style.color = 'var(--red)'; note.textContent = COPY[lang].required; return; }
       const tp = topic.options[topic.selectedIndex].text;
       const body = `Name: ${d.name}\nCompany: ${d.company || '-'}\nEmail: ${d.email}\nPhone: ${d.phone || '-'}\nTopic: ${tp}\n\n${d.message || ''}`;
-      location.href = `mailto:info@itoasis.ae?subject=${encodeURIComponent('Website enquiry: ' + tp)}&body=${encodeURIComponent(body)}`;
+      location.href = `mailto:info@itoasisgulf.com?subject=${encodeURIComponent('Website enquiry: ' + tp)}&body=${encodeURIComponent(body)}`;
       note.style.color = ''; note.textContent = COPY[lang].sent;
     });
   }
