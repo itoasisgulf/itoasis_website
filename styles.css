@@ -527,6 +527,7 @@ html[lang="ar"] .phero h1 { line-height: 1.25; }
 .phero__ring::after { content: ""; position: absolute; top: -6px; left: 50%; width: 12px; height: 12px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 6px rgba(227,36,43,.2); }
 .phero--img { color: #F3F1ED; --text: #F3F1ED; --muted: rgba(243,241,237,.75); --line: rgba(255,255,255,.14); --line-2: rgba(255,255,255,.24); background: #000; }
 .phero__img { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .45; }
+[data-page="services"] .phero__img { background-position: 50% 30%; opacity: .55; }
 .phero--img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.9), rgba(0,0,0,.4)); }
 .phero--img .phero__inner { z-index: 1; }
 .crumbs { display: flex; flex-wrap: wrap; gap: 8px; font-size: 14px; color: var(--muted); margin-bottom: 26px; }
