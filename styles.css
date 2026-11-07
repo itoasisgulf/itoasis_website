@@ -448,7 +448,7 @@ html[lang="ar"] .field { letter-spacing: 0; }
   transition: border-color .3s;
 }
 .field select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - 12px) 55%, calc(100% - 7px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
-.field select option { background: var(--ink-2); color: #fff; }
+.field select option { background: var(--surface); color: var(--text); }
 .field textarea { resize: vertical; }
 .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--orange); }
 .field .is-invalid { border-color: var(--red); }
@@ -672,7 +672,7 @@ html[dir="rtl"] .geo__col li { transform: translateX(10px); font-family: var(--f
 /* contact extras */
 .visit { position: relative; margin: clamp(30px, 3.5vw, 44px) 0 0; height: 400px; border-radius: 24px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
 .visit__map { display: block; width: 100%; height: 100%; border: 0; }
-.visit__card { position: absolute; top: 24px; bottom: 24px; inset-inline-start: 24px; width: min(320px, calc(100% - 48px)); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 28px; border-radius: 18px; background: rgba(11,11,12,.9); border: 1px solid var(--line); backdrop-filter: blur(12px); }
+.visit__card { position: absolute; top: 24px; bottom: 24px; inset-inline-start: 24px; width: min(320px, calc(100% - 48px)); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 28px; border-radius: 18px; background: color-mix(in srgb, var(--surface) 92%, transparent); border: 1px solid var(--line); backdrop-filter: blur(12px); box-shadow: 0 18px 40px rgba(0,0,0,.18); }
 .visit__card .label { margin-bottom: 14px; }
 .sec .visit__h { font-size: 28px; max-width: none; }
 .visit__a { margin: 10px 0 22px; font-size: 15px; color: var(--muted); }
