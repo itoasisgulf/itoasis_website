@@ -846,3 +846,17 @@ html[lang="ar"] .footer__h { letter-spacing: 0; }
 .testi__card figcaption { margin-top: auto; font-weight: 600; color: var(--red); }
 .sec__sub a { color: var(--red); text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 900px) { .testi { grid-template-columns: 1fr; } }
+
+/* Oasis POS page */
+.oasis-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 30px; }
+.oasis-feat { min-height: 0; }
+.oasis-feat .sol__ico .ico { width: 26px; height: 26px; color: var(--orange); }
+.get--one { grid-template-columns: 1fr; gap: 12px; }
+.get--one li { padding: 18px 22px; display: flex; gap: 18px; align-items: center; }
+.get--one span { font-size: 30px; }
+.get--one p { margin-top: 0; }
+.op-callout { display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: center; justify-content: space-between; padding: clamp(22px, 4vw, 36px); border-radius: 22px; background: var(--surface); border: 1px solid var(--orange); }
+.op-callout h2 { margin-bottom: 6px; font-size: clamp(22px, 2.4vw, 30px); }
+.op-callout p { color: var(--muted); max-width: 60ch; }
+@media (max-width: 1100px) { .oasis-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .oasis-grid { grid-template-columns: 1fr; gap: 12px; } .oasis-feat { padding: 20px 22px; gap: 8px; } .oasis-feat .sol__ico { width: 40px; height: 40px; } .oasis-feat h3 { font-size: 19px; } }
