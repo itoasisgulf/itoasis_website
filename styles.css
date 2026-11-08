@@ -159,7 +159,7 @@ html[lang="ar"] .lang-btn { font-family: var(--font); font-size: 13px; }
 .drop a:hover { background: var(--surface-2); padding-inline-start: 18px; }
 .drop a b { font-weight: 600; }
 .drop a small { color: var(--muted); font-size: 13.5px; }
-.drop--mega { display: grid; grid-template-columns: repeat(3, 210px); gap: 8px; padding: 18px; inset-inline-start: -160px; }
+.drop--mega { display: grid; grid-template-columns: repeat(4, 200px); gap: 8px; padding: 18px; inset-inline-start: -380px; }
 .drop__head { font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--red); padding: 0 12px 8px; }
 html[lang="ar"] .drop__head, html[lang="ar"] .label, html[lang="ar"] .logo__uae { letter-spacing: 0; }
 
@@ -860,3 +860,17 @@ html[lang="ar"] .footer__h { letter-spacing: 0; }
 .op-callout p { color: var(--muted); max-width: 60ch; }
 @media (max-width: 1100px) { .oasis-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .oasis-grid { grid-template-columns: 1fr; gap: 12px; } .oasis-feat { padding: 20px 22px; gap: 8px; } .oasis-feat .sol__ico { width: 40px; height: 40px; } .oasis-feat h3 { font-size: 19px; } }
+
+/* Group strip */
+.grp { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 34px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.14); font-size: 14px; color: var(--muted); }
+.grp__lead { letter-spacing: .14em; text-transform: uppercase; font-size: 12px; font-weight: 600; }
+.grp__list { display: flex; flex-wrap: wrap; gap: 8px; }
+.grp__item { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); color: var(--text); font-weight: 500; transition: border-color .3s, color .3s; }
+.grp__item small { color: var(--muted); font-size: 12.5px; font-weight: 400; }
+a.grp__item:hover { border-color: var(--orange); color: var(--orange); }
+.grp__item .ico { width: 13px; height: 13px; opacity: .7; }
+.grp__item--here::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: linear-gradient(135deg, var(--yellow), var(--orange)); }
+[data-theme="light"] .hero--photo .grp { border-top-color: rgba(0,0,0,.12); }
+[data-theme="light"] .hero--photo .grp__item { border-color: rgba(0,0,0,.16); }
+.grp-note a { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 600px) { .grp { margin-top: 26px; gap: 10px; } .grp__lead { width: 100%; } }
