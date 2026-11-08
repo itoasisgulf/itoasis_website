@@ -874,3 +874,13 @@ a.grp__item:hover { border-color: var(--orange); color: var(--orange); }
 [data-theme="light"] .hero--photo .grp__item { border-color: rgba(0,0,0,.16); }
 .grp-note a { text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 600px) { .grp { margin-top: 26px; gap: 10px; } .grp__lead { width: 100%; } }
+
+/* Manage Luxury page */
+.ml-logo { justify-self: end; max-width: 260px; border-radius: 22px; overflow: hidden; border: 1px solid var(--line-2); }
+.ml-logo img { display: block; width: 100%; height: auto; }
+.ml-shot { margin: 40px 0 0; border-radius: 22px; overflow: hidden; border: 1px solid var(--line-2); background: #111; }
+.ml-shot img { display: block; width: 100%; height: auto; }
+.ml-split { align-items: center; }
+.ml-who-h { margin-top: 40px; }
+.ml-watch { display: block; width: 100%; max-width: 420px; height: auto; margin-inline-start: auto; border-radius: 22px; border: 1px solid var(--line); }
+@media (max-width: 900px) { .ml-logo { justify-self: start; max-width: 180px; } .ml-watch { max-width: 100%; margin: 0; aspect-ratio: 4/3; object-fit: cover; } }
