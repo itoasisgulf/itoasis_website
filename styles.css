@@ -884,3 +884,13 @@ a.grp__item:hover { border-color: var(--orange); color: var(--orange); }
 .ml-who-h { margin-top: 40px; }
 .ml-watch { display: block; width: 100%; max-width: 420px; height: auto; margin-inline-start: auto; border-radius: 22px; border: 1px solid var(--line); }
 @media (max-width: 900px) { .ml-logo { justify-self: start; max-width: 180px; } .ml-watch { max-width: 100%; margin: 0; aspect-ratio: 4/3; object-fit: cover; } }
+
+/* Case images */
+.case__img { margin: -36px -36px 22px; aspect-ratio: 16 / 9; overflow: hidden; background: #F4F2EE; border-bottom: 1px solid var(--line); }
+.case__img img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); pointer-events: none; }
+.case__img--contain img { object-fit: contain; padding: 10px; }
+.case:hover .case__img img { transform: scale(1.04); }
+.case:has(.case__img) h3 { margin-top: 10px; }
+.case:has(.case__img) .case__n { display: none; }
+.case:has(.case__img) .case__loc { max-width: none; min-height: 0; }
+@media (max-width: 600px) { .case__img { margin: -26px -26px 18px; } .case:has(.case__img) h3 { font-size: 32px; } }
