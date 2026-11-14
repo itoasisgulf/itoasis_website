@@ -1,6 +1,6 @@
 /* =========================================================
-   IT Oasis UAE — brand palette taken from the IT Oasis logo:
-   globe yellow → orange, "IT" red → crimson, charcoal type.
+   IT Oasis UAE â€” brand palette taken from the IT Oasis logo:
+   globe yellow â†’ orange, "IT" red â†’ crimson, charcoal type.
    ========================================================= */
 :root {
   --red: #E3242B;
@@ -485,7 +485,7 @@ html[lang="ar"] .field { letter-spacing: 0; }
 .btn--glass::before { background: #fff; }
 .btn--glass:hover { color: var(--ink-0); }
 
-/* photo hero (home) — always dark over the photo */
+/* photo hero (home) â€” always dark over the photo */
 .hero--photo { color: #F3F1ED; --text: #F3F1ED; --muted: rgba(243,241,237,.75); --line: rgba(255,255,255,.12); --line-2: rgba(255,255,255,.22); background: #000; }
 .hero__photo { position: absolute; inset: -4%; background-size: cover; background-position: center 40%; animation: drift 30s ease-in-out infinite alternate; }
 .hero__shade { position: absolute; inset: 0; background:
@@ -609,7 +609,7 @@ html[lang="ar"] .lead-xl { font-family: var(--font-ar); line-height: 1.6; }
 .sp-get { display: grid; grid-template-columns: .5fr 1.5fr; gap: 32px; margin-bottom: 32px; }
 .get { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
 .get li { padding: 26px; border-radius: 18px; background: var(--surface); border: 1px solid var(--line); }
-.get span { font-family: var(--font-display); font-size: 40px; font-weight: 700; line-height: 1; color: transparent; -webkit-text-stroke: 1px var(--orange); }
+.get > li > span { font-family: var(--font-display); font-size: 40px; font-weight: 700; line-height: 1; color: transparent; -webkit-text-stroke: 1px var(--orange); }
 .get p { margin-top: 14px; font-size: 16px; font-weight: 500; }
 .tech { padding-top: 30px; border-top: 1px solid var(--line); }
 .tech__h { font-size: 14px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
@@ -875,7 +875,7 @@ html[lang="ar"] .footer__h { letter-spacing: 0; }
 .oasis-feat .sol__ico .ico { width: 26px; height: 26px; color: var(--orange); }
 .get--one { grid-template-columns: 1fr; gap: 12px; }
 .get--one li { padding: 18px 22px; display: flex; gap: 18px; align-items: center; }
-.get--one span { font-size: 30px; }
+.get--one > li > span { font-size: 30px; }
 .get--one p { margin-top: 0; }
 .op-callout { display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: center; justify-content: space-between; padding: clamp(22px, 4vw, 36px); border-radius: 22px; background: var(--surface); border: 1px solid var(--orange); }
 .op-callout h2 { margin-bottom: 6px; font-size: clamp(22px, 2.4vw, 30px); }
@@ -1020,3 +1020,7 @@ a.grp__item:hover { border-color: var(--orange); color: var(--orange); }
 .pr-why { color: var(--muted); font-size: 17px; max-width: 46ch; }
 @media (max-width: 1100px) { .prod-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 600px) { .prod-grid { grid-template-columns: 1fr; } }
+/* Step cards: only the number is outlined; title and text are normal */
+.get p b { display: block; margin-bottom: 4px; color: var(--text); font-weight: 700; font-size: 17px; }
+.get p > span { color: var(--muted); font-weight: 400; }
+.get p br { display: none; }
