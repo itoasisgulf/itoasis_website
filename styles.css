@@ -473,7 +473,7 @@ html[lang="ar"] .field { letter-spacing: 0; }
 /* ---------- footer ---------- */
 .footer { padding: 50px 0 40px; border-top: 1px solid var(--line); background: var(--bg); }
 .footer__inner { display: grid; grid-template-columns: auto 1fr auto; gap: 24px 50px; align-items: center; font-size: 14px; color: var(--muted); }
-.logo--foot .logo__img { height: 40px; }
+.logo--foot .logo__img { height: 120px; width: auto; max-width: 100%; }
 .footer__nav { display: flex; flex-wrap: wrap; gap: 6px 22px; }
 .footer__nav a:hover { color: var(--text); }
 .footer__copy { grid-column: 1 / -1; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; }
@@ -709,9 +709,11 @@ html[dir="rtl"] .geo__col li { transform: translateX(10px); font-family: var(--f
 
 /* footer */
 .footer { padding: 46px 0 26px; }
-.footer__top { display: grid; grid-template-columns: 1.4fr repeat(6, 1fr); gap: 26px; }
-.footer__brand p { margin-top: 16px; color: var(--muted); font-size: 15px; max-width: 32ch; }
+.footer__top { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1.2fr; gap: 40px 56px; align-items: start; }
+.footer__brand p { margin-top: 16px; color: var(--muted); font-size: 15px; max-width: 36ch; }
 .footer__contact { display: grid; gap: 4px; }
+.footer__addr, .footer__hours { font-style: normal; font-size: 15px; line-height: 1.55; color: var(--muted); margin-top: 8px; max-width: 30ch; }
+.footer__hours { margin-top: 4px; }
 .footer__contact a:hover { color: var(--orange); }
 .footer__h { font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text); margin-bottom: 14px; }
 html[lang="ar"] .footer__h { letter-spacing: 0; }
@@ -722,7 +724,7 @@ html[lang="ar"] .footer__h { letter-spacing: 0; }
 @media (max-width: 1100px) {
   .sol { grid-template-columns: 1fr 1fr; }
   .svc-cards, .pk-cards, .uae { grid-template-columns: 1fr 1fr; }
-  .footer__top { grid-template-columns: 1fr 1fr 1fr; }
+  .footer__top { grid-template-columns: repeat(4, 1fr); gap: 36px 32px; }
   .footer__brand { grid-column: 1 / -1; }
 }
 @media (max-width: 900px) {
@@ -737,7 +739,9 @@ html[lang="ar"] .footer__h { letter-spacing: 0; }
 }
 @media (max-width: 600px) {
   .sol, .svc-cards, .pk-cards, .uae, .get, .geo__board { grid-template-columns: 1fr; }
-  .footer__top { grid-template-columns: 1fr 1fr; }
+  .footer__top { grid-template-columns: 1fr 1fr; gap: 30px 24px; }
+  .footer__col--contact, .footer__top > div:nth-child(4) { grid-column: 1 / -1; }
+  .logo--foot .logo__img { height: 84px; }
   .row__link { grid-template-columns: 44px 1fr 22px; }
   .row__n { display: none; }
   .row__ico { grid-column: 1; }
@@ -1035,3 +1039,6 @@ a.grp__item:hover { border-color: var(--orange); color: var(--orange); }
 .get p b { display: block; margin-bottom: 4px; color: var(--text); font-weight: 700; font-size: 17px; }
 .get p > span { color: var(--muted); font-weight: 400; }
 .get p br { display: none; }
+
+/* Phone numbers stay LTR but line up with the rest of the column in Arabic */
+html[dir="rtl"] .footer a[dir="ltr"] { text-align: right; }
