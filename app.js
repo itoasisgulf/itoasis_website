@@ -432,54 +432,111 @@
     host.insertBefore(cv, anchor);
     const ctx = cv.getContext('2d');
     const dark = host.matches('.hero--photo, .phero--img, .sec--ink');
+    const touchUI = !finePointer;
     let w = 0, h = 0, dpr = 1, nodes = [], visible = false, raf = 0, last = 0;
     const mouse = { x: -9999, y: -9999 };
-    const speed = reduceMotion ? .25 : 1;
+    // Touch devices: a finger (or pen) pulls the network; with no finger, a slow invisible
+    // attractor wanders so the header stays alive. att.amt eases between idle and touch.
+    const fing = { on: false, x: 0, y: 0 }, att = { x: 0, y: 0, amt: 0 }, tilt = { x: 0, y: 0, tx: 0, ty: 0 };
+    let ripples = [];
+    const speed = reduceMotion ? 0 : 1;
     function size() {
       const r = host.getBoundingClientRect();
-      dpr = Math.min(devicePixelRatio || 1, 1.5);
+      dpr = Math.min(devicePixelRatio || 1, touchUI ? 2 : 1.5);
       w = r.width; h = r.height;
       cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.round(Math.min(64, Math.max(18, w * h / 26000)));
-      nodes = Array.from({ length: n }, (_, i) => nodes[i] || { x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - .5) * .28, vy: (Math.random() - .5) * .28, r: Math.random() * 1.4 + .8 });
+      let n = Math.round(Math.min(64, Math.max(18, w * h / 26000)));
+      if (touchUI && w < 700) n = Math.max(14, Math.round(n * .7));
+      nodes = Array.from({ length: n }, (_, i) => nodes[i] || { x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - .5) * .28, vy: (Math.random() - .5) * .28, r: Math.random() * 1.4 + .8, g: 0 });
+      if (reduceMotion) draw(0, 0);
     }
     function colors() {
       const light = !dark && root.dataset.theme === 'light';
       return light ? { dot: 'rgba(227,36,43,', line: 'rgba(227,36,43,' } : { dot: 'rgba(244,122,32,', line: 'rgba(253,185,19,' };
     }
-    function frame(t) {
-      raf = 0;
-      if (!visible || document.hidden) return;
-      const dt = Math.min(t - (last || t), 48) / 16.7 * speed; last = t;
+    function draw(dt, t) {
       const c = colors(), link = Math.min(150, w / 7), link2 = link * link;
+      let pull = 1;
+      if (touchUI && !reduceMotion) {
+        att.amt += ((fing.on ? 1 : .5) - att.amt) * Math.min(1, .06 * dt);
+        if (fing.on) { att.x += (fing.x - att.x) * Math.min(1, .35 * dt); att.y += (fing.y - att.y) * Math.min(1, .35 * dt); }
+        else {
+          const ix = w * (.5 + .36 * Math.sin(t * .00023)), iy = h * (.5 + .3 * Math.sin(t * .00035 + 1.3));
+          att.x += (ix - att.x) * Math.min(1, .03 * dt); att.y += (iy - att.y) * Math.min(1, .03 * dt);
+        }
+        pull = att.amt; mouse.x = att.x; mouse.y = att.y;
+        tilt.x += (tilt.tx - tilt.x) * .08; tilt.y += (tilt.ty - tilt.y) * .08;
+      }
       ctx.clearRect(0, 0, w, h);
+      ripples = ripples.filter(rp => t - rp.t0 < 1300);
       for (const p of nodes) {
         p.x += p.vx * dt; p.y += p.vy * dt;
         if (p.x < -20) p.x = w + 20; else if (p.x > w + 20) p.x = -20;
         if (p.y < -20) p.y = h + 20; else if (p.y > h + 20) p.y = -20;
         const mx = mouse.x - p.x, my = mouse.y - p.y, md = mx * mx + my * my;
-        if (md < 28000) { p.x += mx * .004 * dt; p.y += my * .004 * dt; }
+        if (md < 28000) { p.x += mx * .004 * pull * dt; p.y += my * .004 * pull * dt; }
+        p.g = 0;
+        for (const rp of ripples) {
+          const rx = p.x - rp.x, ry = p.y - rp.y, rd = Math.sqrt(rx * rx + ry * ry) || 1, e = Math.abs(rd - rp.R) / 34;
+          if (e < 1) { const k = (1 - e) * rp.a; p.x += rx / rd * k * 1.6 * dt; p.y += ry / rd * k * 1.6 * dt; if (k > p.g) p.g = k; }
+        }
       }
       ctx.lineWidth = 1;
+      const ox = tilt.x * 10, oy = tilt.y * 10;
       for (let i = 0; i < nodes.length; i++) {
-        const a = nodes[i];
+        const a = nodes[i], ax = a.x + ox * a.r, ay = a.y + oy * a.r;
         for (let j = i + 1; j < nodes.length; j++) {
           const b = nodes[j], dx = a.x - b.x, dy = a.y - b.y, d = dx * dx + dy * dy;
-          if (d < link2) { ctx.strokeStyle = c.line + (0.22 * (1 - d / link2)).toFixed(3) + ')'; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+          if (d < link2) { ctx.strokeStyle = c.line + (0.22 * (1 - d / link2)).toFixed(3) + ')'; ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(b.x + ox * b.r, b.y + oy * b.r); ctx.stroke(); }
         }
         const mx = mouse.x - a.x, my = mouse.y - a.y, md = mx * mx + my * my;
-        if (md < 32000) { ctx.strokeStyle = c.line + (0.45 * (1 - md / 32000)).toFixed(3) + ')'; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke(); }
-        ctx.fillStyle = c.dot + '.75)'; ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 6.283); ctx.fill();
+        if (md < 32000) { ctx.strokeStyle = c.line + (0.45 * pull * (1 - md / 32000)).toFixed(3) + ')'; ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(mouse.x, mouse.y); ctx.stroke(); }
+        ctx.fillStyle = c.dot + Math.min(1, .75 + .25 * a.g).toFixed(2) + ')'; ctx.beginPath(); ctx.arc(ax, ay, a.r * (1 + a.g * .9), 0, 6.283); ctx.fill();
       }
-      raf = requestAnimationFrame(frame);
+      for (const rp of ripples) {
+        const k = (t - rp.t0) / 1300; rp.R = k * Math.min(Math.max(w, h) * .6, 420); rp.a = 1 - k;
+        ctx.strokeStyle = c.line + (.35 * rp.a).toFixed(3) + ')'; ctx.beginPath(); ctx.arc(rp.x, rp.y, rp.R, 0, 6.283); ctx.stroke();
+      }
     }
-    const run = () => { if (!raf && visible && !document.hidden) { last = 0; raf = requestAnimationFrame(frame); } };
+    function frame(t) {
+      raf = 0;
+      if (!visible || document.hidden) return;
+      raf = requestAnimationFrame(frame);
+      if (touchUI && last && t - last < 30) return; // about 30fps on phones keeps the battery calm
+      const dt = Math.min(t - (last || t), 48) / 16.7 * speed; last = t;
+      draw(dt, t);
+    }
+    const run = () => { if (!raf && visible && !document.hidden && !reduceMotion) { last = 0; raf = requestAnimationFrame(frame); } };
     new IntersectionObserver(([en]) => { visible = en.isIntersecting; run(); }).observe(host);
     document.addEventListener('visibilitychange', run);
     if (finePointer) {
       host.addEventListener('pointermove', e => { const r = host.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
       host.addEventListener('pointerleave', () => { mouse.x = mouse.y = -9999; });
+    } else if (!reduceMotion) {
+      // Passive listeners only, never preventDefault: scrolling is untouched. When the
+      // browser takes over a scroll it sends pointercancel and the field simply relaxes.
+      const pos = e => { const r = host.getBoundingClientRect(); fing.x = e.clientX - r.left; fing.y = e.clientY - r.top; };
+      const isTouch = e => e.pointerType === 'touch' || e.pointerType === 'pen';
+      let d0 = null;
+      host.addEventListener('pointerdown', e => { if (!isTouch(e)) return; pos(e); fing.on = true; d0 = { x: fing.x, y: fing.y, t: e.timeStamp }; }, { passive: true });
+      host.addEventListener('pointermove', e => { if (isTouch(e) && fing.on) pos(e); }, { passive: true });
+      const up = e => {
+        if (!isTouch(e)) return;
+        fing.on = false;
+        if (e.type === 'pointerup' && d0 && e.timeStamp - d0.t < 350 && Math.hypot(fing.x - d0.x, fing.y - d0.y) < 12) {
+          ripples.push({ x: fing.x, y: fing.y, t0: performance.now(), R: 0, a: 1 }); if (ripples.length > 3) ripples.shift();
+        }
+        d0 = null;
+      };
+      ['pointerup', 'pointercancel'].forEach(n => host.addEventListener(n, up, { passive: true }));
+      // Tilt only where the browser grants orientation without a prompt (Android); iOS is never asked.
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission !== 'function') {
+        addEventListener('deviceorientation', e => {
+          if (!visible || e.gamma == null) return;
+          tilt.tx = Math.max(-1, Math.min(1, e.gamma / 30)); tilt.ty = Math.max(-1, Math.min(1, ((e.beta || 0) - 45) / 30));
+        }, { passive: true });
+      }
     }
     let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(size, 150); });
     size();
