@@ -418,6 +418,9 @@
 
   const year = $('#year'); if (year) year.textContent = new Date().getFullYear();
 
+  // Page transitions: a cancelled transition (fast clicks, back button) is normal, not an error
+  addEventListener('pageswap', e => { const v = e.viewTransition; if (v) { v.ready.catch(() => {}); v.finished.catch(() => {}); } });
+
   /* ---------- motion: network field, parallax, card spotlight, image wipes ---------- */
   // Live network in the page header: drifting nodes joined by thin lines, drawn on one
   // canvas, only while it is on screen and the tab is visible.
@@ -510,12 +513,16 @@
     });
   }
 
-  // Photos wipe open as they scroll into view
+  // Photos wipe open as their card scrolls into view. The card is watched (not the clipped
+  // photo, which reports no visible area), and every photo is shown after 4s whatever happens.
+  const wipes = $$('.case__img, .person__photo');
+  const showWipe = img => img.classList.add('is-shown');
   const wipeIO = new IntersectionObserver(entries => entries.forEach(en => {
     if (!en.isIntersecting) return;
-    en.target.classList.add('is-shown'); wipeIO.unobserve(en.target);
-  }), { threshold: 0.2 });
-  $$('.case__img, .person__photo').forEach(el => { el.classList.add('fx-wipe'); wipeIO.observe(el); });
+    $$('.fx-wipe', en.target).forEach(showWipe); wipeIO.unobserve(en.target);
+  }), { threshold: 0.1 });
+  wipes.forEach(img => { img.classList.add('fx-wipe'); wipeIO.observe(img.closest('.case, .person') || img.parentElement); });
+  setTimeout(() => wipes.forEach(showWipe), 4000);
 
   /* ---------- init ---------- */
   if (rot) rot.innerHTML = [...rot.textContent].map(ch => `<span class="ch">${ch === ' ' ? '&nbsp;' : ch}</span>`).join('');
