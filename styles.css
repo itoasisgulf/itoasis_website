@@ -989,3 +989,12 @@ a.grp__item:hover { border-color: var(--orange); color: var(--orange); }
 .menu__link--ai [data-i18n] { background: linear-gradient(90deg, var(--yellow), var(--orange), var(--red), var(--orange), var(--yellow)); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: aiText 5s linear infinite; }
 .ai-spark { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 0 rgba(244,122,32,.6); animation: ping 2s infinite; flex: none; }
 @keyframes aiText { to { background-position: 220% 0; } }
+
+/* Social profiles */
+.footer__social { display: flex; align-items: center; gap: 14px; margin-top: 18px; font-size: 13px; color: var(--muted); }
+.footer__icons { display: flex; gap: 8px; }
+.footer__icons a { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line-2); color: var(--text); transition: color .3s, border-color .3s, background .3s, transform .3s var(--ease); }
+.footer__icons a:hover { color: #fff; background: var(--red); border-color: var(--red); transform: translateY(-3px); }
+.footer__icons .ico { width: 19px; height: 19px; }
+.info__social { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.info__social a:hover { color: var(--orange); }
