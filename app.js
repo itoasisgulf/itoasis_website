@@ -418,6 +418,105 @@
 
   const year = $('#year'); if (year) year.textContent = new Date().getFullYear();
 
+  /* ---------- motion: network field, parallax, card spotlight, image wipes ---------- */
+  // Live network in the page header: drifting nodes joined by thin lines, drawn on one
+  // canvas, only while it is on screen and the tab is visible.
+  function networkField(host) {
+    const cv = document.createElement('canvas');
+    cv.className = 'fx-net'; cv.setAttribute('aria-hidden', 'true');
+    const anchor = $('.hero__inner, .phero__inner', host);
+    host.insertBefore(cv, anchor);
+    const ctx = cv.getContext('2d');
+    const dark = host.matches('.hero--photo, .phero--img, .sec--ink');
+    let w = 0, h = 0, dpr = 1, nodes = [], visible = false, raf = 0, last = 0;
+    const mouse = { x: -9999, y: -9999 };
+    const speed = reduceMotion ? .25 : 1;
+    function size() {
+      const r = host.getBoundingClientRect();
+      dpr = Math.min(devicePixelRatio || 1, 1.5);
+      w = r.width; h = r.height;
+      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = Math.round(Math.min(64, Math.max(18, w * h / 26000)));
+      nodes = Array.from({ length: n }, (_, i) => nodes[i] || { x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - .5) * .28, vy: (Math.random() - .5) * .28, r: Math.random() * 1.4 + .8 });
+    }
+    function colors() {
+      const light = !dark && root.dataset.theme === 'light';
+      return light ? { dot: 'rgba(227,36,43,', line: 'rgba(227,36,43,' } : { dot: 'rgba(244,122,32,', line: 'rgba(253,185,19,' };
+    }
+    function frame(t) {
+      raf = 0;
+      if (!visible || document.hidden) return;
+      const dt = Math.min(t - (last || t), 48) / 16.7 * speed; last = t;
+      const c = colors(), link = Math.min(150, w / 7), link2 = link * link;
+      ctx.clearRect(0, 0, w, h);
+      for (const p of nodes) {
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        if (p.x < -20) p.x = w + 20; else if (p.x > w + 20) p.x = -20;
+        if (p.y < -20) p.y = h + 20; else if (p.y > h + 20) p.y = -20;
+        const mx = mouse.x - p.x, my = mouse.y - p.y, md = mx * mx + my * my;
+        if (md < 28000) { p.x += mx * .004 * dt; p.y += my * .004 * dt; }
+      }
+      ctx.lineWidth = 1;
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j], dx = a.x - b.x, dy = a.y - b.y, d = dx * dx + dy * dy;
+          if (d < link2) { ctx.strokeStyle = c.line + (0.22 * (1 - d / link2)).toFixed(3) + ')'; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+        }
+        const mx = mouse.x - a.x, my = mouse.y - a.y, md = mx * mx + my * my;
+        if (md < 32000) { ctx.strokeStyle = c.line + (0.45 * (1 - md / 32000)).toFixed(3) + ')'; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke(); }
+        ctx.fillStyle = c.dot + '.75)'; ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 6.283); ctx.fill();
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    const run = () => { if (!raf && visible && !document.hidden) { last = 0; raf = requestAnimationFrame(frame); } };
+    new IntersectionObserver(([en]) => { visible = en.isIntersecting; run(); }).observe(host);
+    document.addEventListener('visibilitychange', run);
+    if (finePointer) {
+      host.addEventListener('pointermove', e => { const r = host.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+      host.addEventListener('pointerleave', () => { mouse.x = mouse.y = -9999; });
+    }
+    let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(size, 150); });
+    size();
+  }
+  $$('.hero, .phero').forEach(networkField);
+
+  // Header photos move a little slower than the page for depth
+  const para = $$('.hero__photo, .phero__img');
+  if (para.length && !reduceMotion) {
+    let ticking = false;
+    const move = () => {
+      ticking = false;
+      for (const el of para) {
+        const r = el.parentElement.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) continue;
+        el.style.translate = `0 ${Math.round(-r.top * .22)}px`;
+      }
+    };
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(move); } }, { passive: true });
+    move();
+  }
+
+  // Soft light that follows the pointer across cards
+  if (finePointer) {
+    $$('.svc-card, .sol__card, .case, .uae__item, .person, .values > article, .trio--cards > *, .testi__card, .faq__item').forEach(card => {
+      card.classList.add('fx-spot');
+      card.addEventListener('pointermove', e => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+  }
+
+  // Photos wipe open as they scroll into view
+  const wipeIO = new IntersectionObserver(entries => entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    en.target.classList.add('is-shown'); wipeIO.unobserve(en.target);
+  }), { threshold: 0.2 });
+  $$('.case__img, .person__photo').forEach(el => { el.classList.add('fx-wipe'); wipeIO.observe(el); });
+
   /* ---------- init ---------- */
   if (rot) rot.innerHTML = [...rot.textContent].map(ch => `<span class="ch">${ch === ' ' ? '&nbsp;' : ch}</span>`).join('');
   applyLang(lang, true);
