@@ -159,7 +159,8 @@
     const f = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Dubai', weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
     const p = Object.fromEntries(f.formatToParts(new Date()).map(x => [x.type, x.value]));
     $('#clock').textContent = `${p.hour}:${p.minute}`;
-    const open = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu'].includes(p.weekday) && +p.hour >= 9 && +p.hour < 18;
+    const mins = +p.hour * 60 + +p.minute;
+    const open = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].includes(p.weekday) && mins >= 510 && mins < 1050; // 8:30 to 17:30
     const status = $('#deskStatus');
     status.textContent = open ? (lang === 'ar' ? AR['tick.open'] : status.dataset.en) : COPY[lang].closed;
     $('#deskDot').classList.toggle('is-closed', !open);
