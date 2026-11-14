@@ -473,7 +473,7 @@ html[lang="ar"] .field { letter-spacing: 0; }
 /* ---------- footer ---------- */
 .footer { padding: 50px 0 40px; border-top: 1px solid var(--line); background: var(--bg); }
 .footer__inner { display: grid; grid-template-columns: auto 1fr auto; gap: 24px 50px; align-items: center; font-size: 14px; color: var(--muted); }
-.logo--foot .logo__img { height: 120px; width: auto; max-width: 100%; }
+.logo--foot .logo__img { height: 92px; width: auto; max-width: 100%; }
 .footer__nav { display: flex; flex-wrap: wrap; gap: 6px 22px; }
 .footer__nav a:hover { color: var(--text); }
 .footer__copy { grid-column: 1 / -1; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; }
@@ -741,7 +741,7 @@ html[lang="ar"] .footer__h { letter-spacing: 0; }
   .sol, .svc-cards, .pk-cards, .uae, .get, .geo__board { grid-template-columns: 1fr; }
   .footer__top { grid-template-columns: 1fr 1fr; gap: 30px 24px; }
   .footer__col--contact, .footer__top > div:nth-child(4) { grid-column: 1 / -1; }
-  .logo--foot .logo__img { height: 84px; }
+  .logo--foot .logo__img { height: 68px; }
   .row__link { grid-template-columns: 44px 1fr 22px; }
   .row__n { display: none; }
   .row__ico { grid-column: 1; }
