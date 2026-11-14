@@ -439,7 +439,7 @@
     // attractor wanders so the header stays alive. att.amt eases between idle and touch.
     const fing = { on: false, x: 0, y: 0 }, att = { x: 0, y: 0, amt: 0 }, tilt = { x: 0, y: 0, tx: 0, ty: 0 };
     let ripples = [];
-    const speed = reduceMotion ? 0 : 1;
+    const speed = reduceMotion ? .25 : 1; // reduced motion: a slow, gentle drift instead of a frozen frame
     function size() {
       const r = host.getBoundingClientRect();
       dpr = Math.min(devicePixelRatio || 1, touchUI ? 2 : 1.5);
@@ -449,7 +449,6 @@
       let n = Math.round(Math.min(64, Math.max(18, w * h / 26000)));
       if (touchUI && w < 700) n = Math.max(14, Math.round(n * .7));
       nodes = Array.from({ length: n }, (_, i) => nodes[i] || { x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - .5) * .28, vy: (Math.random() - .5) * .28, r: Math.random() * 1.4 + .8, g: 0 });
-      if (reduceMotion) draw(0, 0);
     }
     function colors() {
       const light = !dark && root.dataset.theme === 'light';
@@ -458,7 +457,7 @@
     function draw(dt, t) {
       const c = colors(), link = Math.min(150, w / 7), link2 = link * link;
       let pull = 1;
-      if (touchUI && !reduceMotion) {
+      if (touchUI) {
         att.amt += ((fing.on ? 1 : .5) - att.amt) * Math.min(1, .06 * dt);
         if (fing.on) { att.x += (fing.x - att.x) * Math.min(1, .35 * dt); att.y += (fing.y - att.y) * Math.min(1, .35 * dt); }
         else {
@@ -507,13 +506,13 @@
       const dt = Math.min(t - (last || t), 48) / 16.7 * speed; last = t;
       draw(dt, t);
     }
-    const run = () => { if (!raf && visible && !document.hidden && !reduceMotion) { last = 0; raf = requestAnimationFrame(frame); } };
+    const run = () => { if (!raf && visible && !document.hidden) { last = 0; raf = requestAnimationFrame(frame); } };
     new IntersectionObserver(([en]) => { visible = en.isIntersecting; run(); }).observe(host);
     document.addEventListener('visibilitychange', run);
     if (finePointer) {
       host.addEventListener('pointermove', e => { const r = host.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
       host.addEventListener('pointerleave', () => { mouse.x = mouse.y = -9999; });
-    } else if (!reduceMotion) {
+    } else {
       // Passive listeners only, never preventDefault: scrolling is untouched. When the
       // browser takes over a scroll it sends pointercancel and the field simply relaxes.
       const pos = e => { const r = host.getBoundingClientRect(); fing.x = e.clientX - r.left; fing.y = e.clientY - r.top; };
