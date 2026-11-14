@@ -836,7 +836,8 @@ html[lang="ar"] .footer__h { letter-spacing: 0; }
   .nav__cta { display: none; }
   .nav { padding: 10px 0; }
   .nav.is-scrolled { padding: 6px 0; }
-  .logo__img, .nav.is-scrolled .logo__img { height: 32px; }
+  .logo__img { height: 44px; }
+  .nav.is-scrolled .logo__img { height: 38px; }
   .logo { gap: 5px; }
   .logo__uae { display: none; }
   .icon-btn, .burger { width: 38px; height: 38px; }
