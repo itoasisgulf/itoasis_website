@@ -998,3 +998,6 @@ a.grp__item:hover { border-color: var(--orange); color: var(--orange); }
 .footer__icons .ico { width: 19px; height: 19px; }
 .info__social { display: flex; flex-wrap: wrap; gap: 6px 18px; }
 .info__social a:hover { color: var(--orange); }
+.footer__social { flex-wrap: wrap; gap: 10px 14px; }
+.footer__social > span:first-child { width: 100%; white-space: nowrap; }
+.footer__icons a { flex: none; }
