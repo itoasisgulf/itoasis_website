@@ -709,7 +709,7 @@ html[dir="rtl"] .geo__col li { transform: translateX(10px); font-family: var(--f
 
 /* footer */
 .footer { padding: 46px 0 26px; }
-.footer__top { display: grid; grid-template-columns: 1.4fr repeat(5, 1fr); gap: 30px; }
+.footer__top { display: grid; grid-template-columns: 1.4fr repeat(6, 1fr); gap: 26px; }
 .footer__brand p { margin-top: 16px; color: var(--muted); font-size: 15px; max-width: 32ch; }
 .footer__contact { display: grid; gap: 4px; }
 .footer__contact a:hover { color: var(--orange); }
@@ -1001,3 +1001,22 @@ a.grp__item:hover { border-color: var(--orange); color: var(--orange); }
 .footer__social { flex-wrap: wrap; gap: 10px 14px; }
 .footer__social > span:first-child { width: 100%; white-space: nowrap; }
 .footer__icons a { flex: none; }
+
+/* Products */
+.drop--prod { min-width: 300px; }
+.drop--prod .drop__all { margin-top: 6px; }
+.prod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.prod-card { display: flex; flex-direction: column; border-radius: 22px; background: var(--surface); border: 1px solid var(--line); overflow: hidden; transition: transform .5s var(--ease), border-color .4s; }
+.prod-card:hover { transform: translateY(-6px); border-color: var(--orange); }
+.prod-card__img { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; background: #0b1020; display: grid; place-items: center; border-bottom: 1px solid var(--line); }
+.prod-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s var(--ease); }
+.prod-card:hover .prod-card__img img { transform: scale(1.04); }
+.prod-card__img--ico { background: color-mix(in srgb, var(--orange) 10%, var(--surface)); }
+.prod-card__img--ico .ico { width: 64px; height: 64px; color: var(--orange); }
+.prod-card__body { padding: 24px 26px 26px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.prod-card__body h3 { font-size: 22px; }
+.prod-card__body p { color: var(--muted); font-size: 15px; }
+.prod-card__body .sol__more { margin-top: auto; padding-top: 8px; }
+.pr-why { color: var(--muted); font-size: 17px; max-width: 46ch; }
+@media (max-width: 1100px) { .prod-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .prod-grid { grid-template-columns: 1fr; } }
