@@ -11,7 +11,7 @@
 
   const COPY = {
     en: {
-      words: ['POS systems', 'ERP & CRM', 'networks', 'CCTV', 'Microsoft 365', 'cybersecurity', 'AI'],
+      words: ['AI solutions', 'automation', 'POS systems', 'ERP & CRM', 'networks', 'CCTV', 'Microsoft 365', 'cybersecurity'],
       closed: 'Support desk closed · we reply next business morning',
       pkg: {
         cafe: { name: 'CAFÉ & KIOSK', d: 'Compact counter-service setup: POS terminal, receipt printer, Wi-Fi and cameras.' },
@@ -24,7 +24,7 @@
       themeTo: { dark: 'Switch to light theme', light: 'Switch to dark theme' }
     },
     ar: {
-      words: ['أنظمة نقاط البيع', 'تخطيط الموارد وإدارة العملاء', 'الشبكات', 'كاميرات المراقبة', 'مايكروسوفت 365', 'الأمن السيبراني', 'الذكاء الاصطناعي'],
+      words: ['حلول الذكاء الاصطناعي', 'الأتمتة', 'أنظمة نقاط البيع', 'تخطيط الموارد وإدارة العملاء', 'الشبكات', 'كاميرات المراقبة', 'مايكروسوفت 365', 'الأمن السيبراني'],
       closed: 'مكتب الدعم مغلق · نرد صباح يوم العمل التالي',
       pkg: {
         cafe: { name: 'مقهى وكشك', d: 'تجهيز مدمج للخدمة على الكاونتر: جهاز نقطة بيع وطابعة إيصالات وواي فاي وكاميرات.' },
@@ -424,7 +424,7 @@
   function networkField(host) {
     const cv = document.createElement('canvas');
     cv.className = 'fx-net'; cv.setAttribute('aria-hidden', 'true');
-    const anchor = $('.hero__inner, .phero__inner', host);
+    const anchor = $('.hero__inner, .phero__inner, .ai-sec__inner', host);
     host.insertBefore(cv, anchor);
     const ctx = cv.getContext('2d');
     const dark = host.matches('.hero--photo, .phero--img, .sec--ink');
@@ -480,7 +480,7 @@
     let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(size, 150); });
     size();
   }
-  $$('.hero, .phero').forEach(networkField);
+  $$('.hero, .phero, .ai-sec').forEach(networkField);
 
   // Header photos move a little slower than the page for depth
   const para = $$('.hero__photo, .phero__img');
