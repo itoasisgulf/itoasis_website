@@ -130,8 +130,8 @@ html[lang="ar"] .lang-btn { font-family: var(--font); font-size: 13px; }
 .nav__inner { display: flex; align-items: center; gap: 28px; }
 
 .logo { position: relative; display: flex; align-items: flex-end; gap: 6px; flex-shrink: 0; }
-.logo__img { height: 56px; width: auto; transition: height .4s var(--ease); }
-.nav.is-scrolled .logo__img { height: 46px; }
+.logo__img { height: 68px; width: auto; transition: height .4s var(--ease); }
+.nav.is-scrolled .logo__img { height: 54px; }
 .logo__uae { font-family: var(--font-display); font-weight: 700; font-size: 12px; letter-spacing: .2em; color: var(--red); padding-bottom: 4px; }
 [data-theme="dark"] .logo__img--onLight, [data-theme="light"] .logo__img--onDark { display: none; }
 
