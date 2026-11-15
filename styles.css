@@ -800,7 +800,7 @@ html[lang="ar"] .footer__h { letter-spacing: 0; }
   html[dir="rtl"] .menu { clip-path: circle(0 at 40px 36px); }
   .menu.is-open { clip-path: circle(150% at calc(100% - 40px) 36px); }
   html[dir="rtl"] .menu.is-open { clip-path: circle(150% at 40px 36px); }
-  .menu__link { font-family: var(--font-display); font-size: 30px; font-weight: 600; color: var(--text); padding: 14px 0; justify-content: space-between; width: 100%; border-bottom: 1px solid var(--line); }
+  .menu__link { font-family: var(--font-display); font-size: 21px; font-weight: 600; color: var(--text); padding: 13px 0; justify-content: space-between; width: 100%; border-bottom: 1px solid var(--line); }
   .menu__link::after { display: none; }
   .menu__item:hover .menu__toggle .ico { transform: none; }
   .menu__item.is-open .menu__toggle .ico { transform: rotate(180deg); }
@@ -1042,3 +1042,6 @@ a.grp__item:hover { border-color: var(--orange); color: var(--orange); }
 
 /* Phone numbers stay LTR but line up with the rest of the column in Arabic */
 html[dir="rtl"] .footer a[dir="ltr"] { text-align: right; }
+
+/* Mobile menu: keep the AI label on the left with its pulse right after it */
+@media (max-width: 1100px) { .menu__link--ai { justify-content: flex-start; gap: 12px; } .menu__link--ai .ai-spark { order: 2; } }
